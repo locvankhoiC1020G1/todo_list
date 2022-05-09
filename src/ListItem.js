@@ -1,31 +1,43 @@
 import './list.css'
 import {useState} from "react";
 
-function ListItem({lists, DeleteItem, HandleInputChange, value}) {
-    const [editItem, setEdit] = useState(value)
-    const HandleEdit = (event) => {
-        setEdit(event.target.value)
+function ListItem({deleteItem, update, job}) {
+    const [item, setItem] = useState(job.name)
+    const [isEdit, setIsEdit] = useState(true)
+    const handleEdit = (event) => {
+        setItem(event.target.value)
     }
-
-    const handleSubmit = (event) => {
-
+    const handleUpdate = () => {
+        update(job.id, item)
+        toggleFrom()
     }
-    console.log(lists)
-    return (
-        <div>
-            {lists.map((item, index) => (
-                <div key={index}>
-                    <span>{item.name}</span>
-                    <span>{item.id}</span>
-                    {console.log(item.id)}
-                    <button onClick={() => DeleteItem(index)} style={{color: "red", margin: "20px"}}>X</button>
-                    <div>
-                        <input value={editItem} onChange={HandleEdit}/>
-                        <button>Update</button>
-                    </div>
-                </div>))}
-        </div>
-    )
+    const toggleFrom = () => {
+        // đảo ngược giá trị của isEdit
+        setIsEdit(!isEdit);
+    }
+    const dashWords = (element) => {
+        //click lên sẽ gạch ngang job
+        document.getElementById(element).style['text-decoration'] = "line-through"
+    }
+    let result;
+    if (isEdit) {
+        result = (
+            <div id={job.id} key={job.id} onClick={() => dashWords(job.id)}>
+                <span>{job.name}</span>
+                <span>{job.id}</span>
+                <button onClick={() => deleteItem(job.id)}>X</button>
+                <button onClick={toggleFrom}>Edit</button>
+            </div>
+        )
+    } else {
+        result = (
+            <div>
+                <input value={item} onChange={handleEdit}/>
+                <button onClick={handleUpdate}>Update</button>
+            </div>
+        )
+    }
+    return result
 }
 
 export default ListItem

@@ -1,3 +1,10 @@
 #inputEdit {
     display: none;
 }
+
+span{
+    padding-right: 30px;
+}
+p{
+    text-decoration: line-through;
+}
