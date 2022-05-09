@@ -10,7 +10,7 @@ function Form() {
     }
     const HandleSubmit = () => {
         // thêm 1 object vào mảng với id ngẫu nhiên
-        setJobs(prevState => [...prevState, {id: uuid(), name: value}]);
+        setJobs(prevState => [...prevState, {id: uuid(), name: value, complete: false}]);
         //sau khi thêm thành công, đặt lại value ở input = ''
         setValue('');
     }
@@ -28,8 +28,18 @@ function Form() {
         });
         return setJobs(updateItem);
     }
+    const checkComplete = (id) => {
+        const updateItem = jobs.map(job => {
+            if (job.id === id) {
+                return {...job, complete: !job.complete};
+            }
+            return job
+        });
+        return setJobs(updateItem);
+    }
     const listItems = jobs.map(job => (
         <ListItem
+            checkComplete={checkComplete}
             deleteItem={deleteItem}
             update={update}
             job={job}

@@ -1,7 +1,7 @@
 import './list.css'
 import {useState} from "react";
 
-function ListItem({deleteItem, update, job}) {
+function ListItem({checkComplete, deleteItem, update, job}) {
     const [item, setItem] = useState(job.name)
     const [isEdit, setIsEdit] = useState(true)
     const handleEdit = (event) => {
@@ -15,16 +15,12 @@ function ListItem({deleteItem, update, job}) {
         // đảo ngược giá trị của isEdit
         setIsEdit(!isEdit);
     }
-    const dashWords = (element) => {
-        //click lên sẽ gạch ngang job
-        document.getElementById(element).style['text-decoration'] = "line-through"
-    }
     let result;
     if (isEdit) {
         result = (
-            <div id={job.id} key={job.id} onClick={() => dashWords(job.id)}>
-                <span>{job.name}</span>
-                <span>{job.id}</span>
+            <div id={job.id} key={job.id} onClick={() => checkComplete(job.id)}>
+                <span className={job.complete ? "Todo-task completed" : "Todo-task"}>{job.name}</span>
+                {/*<span>{job.id}</span>*/}
                 <button onClick={() => deleteItem(job.id)}>X</button>
                 <button onClick={toggleFrom}>Edit</button>
             </div>
